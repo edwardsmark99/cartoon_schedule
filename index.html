@@ -1,0 +1,132 @@
+
+---
+
+### `index.html`
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cartoon Schedule Builder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Cartoon Schedule Builder</h1>
+      <p>
+        Create a high-level, easy-to-read delivery schedule with swim lanes,
+        milestones, UK holiday-aware working days, and optional critical path
+        highlighting.
+      </p>
+    </header>
+
+    <main class="layout">
+      <section class="panel controls-panel">
+        <h2>Project setup</h2>
+
+        <div class="field-row">
+          <label for="projectStart">Project start date</label>
+          <input type="date" id="projectStart" />
+        </div>
+
+        <div class="field-row checkbox-row">
+          <input type="checkbox" id="showCriticalPath" checked />
+          <label for="showCriticalPath">Show critical path (red outline)</label>
+        </div>
+
+        <div class="field-row">
+          <label for="csvInput">Import activities from CSV</label>
+          <input type="file" id="csvInput" accept=".csv,text/csv" />
+          <small>
+            Required columns: id, name, swimlane, duration, dependencies,
+            milestone. Dependencies should be comma separated IDs.
+          </small>
+        </div>
+
+        <div class="button-row">
+          <button id="loadExampleBtn" type="button">Load example data</button>
+          <button id="renderBtn" type="button" class="primary">Build schedule</button>
+        </div>
+
+        <div class="button-row">
+          <button id="downloadPngBtn" type="button">Download chart PNG</button>
+          <button id="downloadSvgBtn" type="button">Download chart SVG</button>
+        </div>
+      </section>
+
+      <section class="panel table-panel">
+        <h2>Activity table</h2>
+        <p>
+          Add or edit activities below. Milestones should have duration 0.
+        </p>
+
+        <div class="table-actions">
+          <button id="addRowBtn" type="button">Add activity row</button>
+          <button id="clearRowsBtn" type="button">Clear all rows</button>
+        </div>
+
+        <div class="table-wrap">
+          <table id="activityTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Activity Name</th>
+                <th>Swim lane</th>
+                <th>Duration<br />(working days)</th>
+                <th>Dependencies<br />(comma separated IDs)</th>
+                <th>Milestone?</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody id="activityTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <section class="panel chart-panel">
+      <div class="chart-header">
+        <h2>Cartoon schedule chart</h2>
+        <small id="statusText">Ready.</small>
+      </div>
+      <div class="chart-wrap">
+        <svg id="scheduleSvg" role="img" aria-label="Cartoon schedule chart"></svg>
+      </div>
+    </section>
+
+    <template id="activityRowTemplate">
+      <tr>
+        <td><input type="text" data-field="id" placeholder="A1" /></td>
+        <td><input type="text" data-field="name" placeholder="Discovery" /></td>
+        <td>
+          <input type="text" data-field="swimlane" placeholder="Design" />
+        </td>
+        <td>
+          <input
+            type="number"
+            data-field="duration"
+            min="0"
+            step="1"
+            placeholder="5"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            data-field="dependencies"
+            placeholder="A0, A2"
+          />
+        </td>
+        <td class="milestone-cell">
+          <input type="checkbox" data-field="milestone" />
+        </td>
+        <td>
+          <button type="button" class="remove-row-btn">✕</button>
+        </td>
+      </tr>
+    </template>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

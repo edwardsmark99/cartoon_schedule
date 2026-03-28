@@ -1,0 +1,201 @@
+:root {
+  --bg: #f4f7fb;
+  --panel-bg: #ffffff;
+  --ink: #1e2a39;
+  --muted: #5b6b80;
+  --line: #d4deed;
+  --accent: #2a74ff;
+  --danger: #ce2d4f;
+  --shadow: 0 8px 28px rgba(16, 27, 55, 0.08);
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px;
+  background: linear-gradient(175deg, #f8fbff, var(--bg));
+  color: var(--ink);
+}
+
+.app-header h1 {
+  margin: 0 0 8px;
+}
+
+.app-header p {
+  margin-top: 0;
+  color: var(--muted);
+  max-width: 960px;
+}
+
+.layout {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  align-items: start;
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+.controls-panel .field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="file"] {
+  border: 1px solid #b8c9e3;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  padding: 8px 10px;
+}
+
+.checkbox-row {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 10px !important;
+}
+
+.button-row,
+.table-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+button {
+  border: 1px solid #bfd0ea;
+  background: #f6faff;
+  color: #25405f;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover {
+  filter: brightness(0.98);
+}
+
+button.primary {
+  background: var(--accent);
+  color: white;
+  border-color: #1b63e7;
+}
+
+.table-wrap {
+  overflow: auto;
+  max-height: 420px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 820px;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background: #f5f9ff;
+  z-index: 1;
+}
+
+th,
+td {
+  border-bottom: 1px solid #e3ebf7;
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+td input[type="text"],
+td input[type="number"] {
+  width: 100%;
+}
+
+.milestone-cell {
+  text-align: center;
+}
+
+.remove-row-btn {
+  background: #fff6f6;
+  border-color: #ffcbcb;
+  color: #8c1b1b;
+}
+
+.chart-panel {
+  margin-top: 16px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+
+#statusText {
+  color: var(--muted);
+}
+
+.chart-wrap {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f8fbff;
+}
+
+#scheduleSvg {
+  width: 100%;
+  min-height: 440px;
+  display: block;
+}
+
+.lane-label {
+  font-size: 13px;
+  font-weight: 700;
+  fill: #19304f;
+}
+
+.axis-label {
+  font-size: 11px;
+  fill: #617791;
+}
+
+.task-label {
+  font-size: 12px;
+  fill: #18314f;
+  font-weight: 600;
+}
+
+.milestone-label {
+  font-size: 11px;
+  fill: #18314f;
+}
+
+.date-label {
+  font-size: 10px;
+  fill: #516780;
+}
