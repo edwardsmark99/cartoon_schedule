@@ -19,3 +19,6 @@ Because this is a static app, you can open `index.html` directly, or serve it fr
 
 ```bash
 python3 -m http.server 8080
+```
+
+Then open `http://localhost:8080`.

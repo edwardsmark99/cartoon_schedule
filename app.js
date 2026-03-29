@@ -416,15 +416,17 @@ function laneOrder(nodes) {
 function renderSvg(schedule, showCritical) {
   const { graph, order, projectDuration, firstWorkDay } = schedule;
   const nodes = order.map((id) => graph.get(id));
-  const lanes = laneOrder(nodes);
+  const taskNodes = nodes.filter((node) => !node.milestone);
+  const lanes = laneOrder(taskNodes);
   const laneIdx = new Map(lanes.map((lane, i) => [lane, i]));
   const colors = laneColorMap(lanes);
 
   const margin = { top: 46, right: 20, bottom: 38, left: 170 };
   const dayWidth = 32;
+  const milestoneBandHeight = 66;
   const laneHeight = 82;
   const width = margin.left + margin.right + Math.max(projectDuration + 2, 12) * dayWidth;
-  const height = margin.top + margin.bottom + lanes.length * laneHeight;
+  const height = margin.top + margin.bottom + milestoneBandHeight + lanes.length * laneHeight;
 
   els.scheduleSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
   els.scheduleSvg.innerHTML = "";
@@ -439,8 +441,27 @@ function renderSvg(schedule, showCritical) {
   bg.setAttribute("fill", "#ffffff");
   els.scheduleSvg.appendChild(bg);
 
+  const milestoneBand = document.createElementNS(ns, "rect");
+  milestoneBand.setAttribute("x", margin.left.toString());
+  milestoneBand.setAttribute("y", margin.top.toString());
+  milestoneBand.setAttribute("width", (width - margin.left - margin.right).toString());
+  milestoneBand.setAttribute("height", milestoneBandHeight.toString());
+  milestoneBand.setAttribute("fill", "#fff3e5");
+  milestoneBand.setAttribute("stroke", "#e3eaf7");
+  milestoneBand.setAttribute("stroke-width", "1");
+  els.scheduleSvg.appendChild(milestoneBand);
+
+  const milestoneLabel = document.createElementNS(ns, "text");
+  milestoneLabel.textContent = "Milestones";
+  milestoneLabel.setAttribute("x", "12");
+  milestoneLabel.setAttribute("y", (margin.top + milestoneBandHeight / 2 + 5).toString());
+  milestoneLabel.setAttribute("class", "lane-label");
+  els.scheduleSvg.appendChild(milestoneLabel);
+
+  const lanesStartY = margin.top + milestoneBandHeight;
+
   lanes.forEach((lane, idx) => {
-    const y = margin.top + idx * laneHeight;
+    const y = lanesStartY + idx * laneHeight;
     const c = colors.get(lane);
 
     const laneRect = document.createElementNS(ns, "rect");
@@ -486,16 +507,18 @@ function renderSvg(schedule, showCritical) {
 
   nodes.forEach((node) => {
     const lane = laneIdx.get(node.swimlane);
-    const yBase = margin.top + lane * laneHeight;
-    const barY = yBase + 24;
+    const yBase = node.milestone ? margin.top : lanesStartY + lane * laneHeight;
+    const barY = node.milestone ? margin.top + 12 : yBase + 24;
     const x = margin.left + node.es * dayWidth;
     const widthDays = Math.max(node.duration, 1);
     const barW = widthDays * dayWidth - 4;
-    const c = colors.get(node.swimlane);
+    const c = node.milestone
+      ? { taskFill: "#ffc775", stroke: "#d89216" }
+      : colors.get(node.swimlane);
 
     if (node.milestone) {
       const cx = x + dayWidth / 2;
-      const cy = barY + 16;
+      const cy = margin.top + milestoneBandHeight / 2;
       const size = 12;
       const diamond = document.createElementNS(ns, "polygon");
       diamond.setAttribute(
@@ -537,9 +560,11 @@ function renderSvg(schedule, showCritical) {
       const dep = graph.get(depId);
       const depLane = laneIdx.get(dep.swimlane);
       const depX = margin.left + dep.ef * dayWidth;
-      const depY = margin.top + depLane * laneHeight + 39;
+      const depY = dep.milestone
+        ? margin.top + milestoneBandHeight / 2
+        : lanesStartY + depLane * laneHeight + 39;
       const targetX = margin.left + node.es * dayWidth + 2;
-      const targetY = barY + 15;
+      const targetY = node.milestone ? margin.top + milestoneBandHeight / 2 : barY + 15;
 
       const path = document.createElementNS(ns, "path");
       const midX = depX + (targetX - depX) / 2;
