@@ -30,12 +30,35 @@
           <label for="showCriticalPath">Show critical path (red outline)</label>
         </div>
 
+        <div class="field-row checkbox-row">
+          <input type="checkbox" id="showSprints" />
+          <label for="showSprints">Show sprint row</label>
+        </div>
+
+        <div class="sprint-settings" id="sprintSettings">
+          <div class="field-row">
+            <label for="sprintDuration">Sprint duration (working days)</label>
+            <input type="number" id="sprintDuration" min="1" step="1" value="10" />
+          </div>
+
+          <div class="field-row">
+            <label for="sprintStartDate">Sprint start date</label>
+            <input type="date" id="sprintStartDate" />
+          </div>
+
+          <div class="field-row">
+            <label for="startingSprintNumber">Starting sprint number</label>
+            <input type="number" id="startingSprintNumber" step="1" value="1" />
+          </div>
+        </div>
+
         <div class="field-row">
           <label for="csvInput">Import activities from CSV</label>
           <input type="file" id="csvInput" accept=".csv,text/csv" />
           <small>
             Required columns: id, name, swimlane, duration, dependencies,
-            milestone. Dependencies should be comma separated IDs.
+            milestone. Optional: subswimlane. Dependencies should be comma
+            separated IDs.
           </small>
         </div>
 
@@ -63,11 +86,22 @@
 
         <div class="table-wrap">
           <table id="activityTable">
+            <colgroup>
+              <col class="col-id" />
+              <col class="col-name" />
+              <col class="col-swimlane" />
+              <col class="col-subswimlane" />
+              <col class="col-duration" />
+              <col class="col-dependencies" />
+              <col class="col-milestone" />
+              <col class="col-remove" />
+            </colgroup>
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Activity Name</th>
                 <th>Swim lane</th>
+                <th>Sub-swim lane</th>
                 <th>Duration<br />(working days)</th>
                 <th>Dependencies<br />(comma separated IDs)</th>
                 <th>Milestone?</th>
@@ -96,6 +130,9 @@
         <td><input type="text" data-field="name" placeholder="Discovery" /></td>
         <td>
           <input type="text" data-field="swimlane" placeholder="Design" />
+        </td>
+        <td>
+          <input type="text" data-field="subSwimlane" placeholder="UX" />
         </td>
         <td>
           <input
