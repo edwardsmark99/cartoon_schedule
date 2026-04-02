@@ -72,6 +72,7 @@ const els = {
   rowTemplate: document.getElementById("activityRowTemplate"),
   status: document.getElementById("statusText"),
   scheduleSvg: document.getElementById("scheduleSvg"),
+  downloadCsvBtn: document.getElementById("downloadCsvBtn"),
   downloadPngBtn: document.getElementById("downloadPngBtn"),
   downloadSvgBtn: document.getElementById("downloadSvgBtn")
 };
@@ -293,36 +294,99 @@ function readActivitiesFromTable() {
 }
 
 function parseCsv(text) {
-  const lines = text
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
+  function normalizeCsvHeader(value) {
+    return value
+      .replace(/^\uFEFF/, "")
+      .trim()
+      .toLowerCase()
+      .replace(/[?()]/g, "")
+      .replace(/[^a-z0-9]+/g, "");
+  }
 
-  if (lines.length < 2) {
+  function parseCsvRows(rawText) {
+    const rows = [];
+    let row = [];
+    let cell = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < rawText.length; i += 1) {
+      const char = rawText[i];
+      const next = rawText[i + 1];
+
+      if (char === '"') {
+        if (inQuotes && next === '"') {
+          cell += '"';
+          i += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+        continue;
+      }
+
+      if (char === "," && !inQuotes) {
+        row.push(cell.trim());
+        cell = "";
+        continue;
+      }
+
+      if ((char === "\n" || char === "\r") && !inQuotes) {
+        if (char === "\r" && next === "\n") {
+          i += 1;
+        }
+        row.push(cell.trim());
+        if (row.some((value) => value !== "")) {
+          rows.push(row);
+        }
+        row = [];
+        cell = "";
+        continue;
+      }
+
+      cell += char;
+    }
+
+    row.push(cell.trim());
+    if (row.some((value) => value !== "")) {
+      rows.push(row);
+    }
+
+    return rows;
+  }
+
+  const rows = parseCsvRows(text);
+
+  if (rows.length < 2) {
     throw new Error("CSV should include a header row plus at least one data row.");
   }
 
-  const headers = lines[0].split(",").map((h) => h.trim().toLowerCase());
-  const required = ["id", "name", "swimlane", "duration", "dependencies", "milestone"];
+  const headerAliases = {
+    id: ["id", "activityid"],
+    name: ["name", "activityname", "activity"],
+    swimlane: ["swimlane", "swimlanes", "lane"],
+    subSwimlane: ["subswimlane", "subswimlanes", "sublane"],
+    duration: ["duration", "workingdays", "durationworkingdays", "days"],
+    dependencies: ["dependencies", "dependency", "dependson", "predecessors", "predecessor"],
+    milestone: ["milestone", "ismilestone"]
+  };
 
-  const missing = required.filter((col) => !headers.includes(col));
+  const normalizedHeaders = rows[0].map(normalizeCsvHeader);
+  const idx = {};
+  Object.entries(headerAliases).forEach(([field, aliases]) => {
+    idx[field] = normalizedHeaders.findIndex((header) => aliases.includes(header));
+  });
+
+  const missing = ["id", "name", "swimlane", "duration", "dependencies", "milestone"].filter(
+    (field) => idx[field] === -1
+  );
   if (missing.length) {
     throw new Error(`Missing CSV columns: ${missing.join(", ")}`);
   }
 
-  const idx = Object.fromEntries(headers.map((h, i) => [h, i]));
-
-  return lines.slice(1).map((line, rowNum) => {
-    const cols = line.split(",");
+  return rows.slice(1).map((cols, rowNum) => {
     const id = (cols[idx.id] || "").trim();
     const name = (cols[idx.name] || "").trim();
     const swimlane = (cols[idx.swimlane] || "").trim();
-    const subSwimlane = (
-      cols[idx.subswimlane] ||
-      cols[idx.sub_swimlane] ||
-      cols[idx["sub swimlane"]] ||
-      ""
-    ).trim();
+    const subSwimlane = idx.subSwimlane >= 0 ? (cols[idx.subSwimlane] || "").trim() : "";
     const duration = Number((cols[idx.duration] || "").trim());
     const dependencies = (cols[idx.dependencies] || "")
       .split(/[;|]/)
@@ -1240,9 +1304,84 @@ function renderSvg(schedule, showCritical, sprintSettings) {
   els.scheduleSvg.appendChild(legend);
 }
 
-function downloadSvg() {
+function buildExportSvgMarkup() {
+  const exportSvg = els.scheduleSvg.cloneNode(true);
+  const viewBox = (els.scheduleSvg.getAttribute("viewBox") || "0 0 800 400")
+    .split(/\s+/)
+    .map(Number);
+  const [, , width = 800, height = 400] = viewBox;
+  const ns = "http://www.w3.org/2000/svg";
+
+  exportSvg.setAttribute("xmlns", ns);
+  exportSvg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+  exportSvg.setAttribute("width", width.toString());
+  exportSvg.setAttribute("height", height.toString());
+  exportSvg.setAttribute("preserveAspectRatio", "xMinYMin meet");
+
+  const style = document.createElementNS(ns, "style");
+  style.textContent = `
+    text {
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      text-rendering: geometricPrecision;
+    }
+    .lane-label { font-size: 7px; font-weight: 700; fill: #222222; }
+    .lane-band-label { font-size: 7px; font-weight: 700; fill: #ffffff; }
+    .axis-label { font-size: 6px; fill: #5a6b82; }
+    .task-label { font-size: 6px; font-weight: 400; fill: #222222; }
+    .milestone-label { font-size: 6px; fill: #222222; }
+    .milestone-date-label { font-size: 5px; font-weight: 600; fill: #5a6b82; }
+    .timescale-major { font-size: 8px; font-weight: 700; fill: #ffffff; }
+    .timescale-sprint { font-size: 5.5px; font-weight: 700; fill: #466789; }
+    .timescale-sprint-date { font-size: 4.5px; font-weight: 600; fill: #6c84a3; }
+    .timescale-day { font-size: 5px; font-weight: 600; fill: #567392; }
+  `;
+  exportSvg.insertBefore(style, exportSvg.firstChild);
+
   const serializer = new XMLSerializer();
-  const source = serializer.serializeToString(els.scheduleSvg);
+  return serializer.serializeToString(exportSvg);
+}
+
+function csvEscape(value) {
+  const stringValue = String(value ?? "");
+  return /[",\r\n]/.test(stringValue)
+    ? `"${stringValue.replace(/"/g, '""')}"`
+    : stringValue;
+}
+
+function downloadCsv() {
+  const activities = readActivitiesFromTable();
+  if (!activities.length) {
+    throw new Error("Please add at least one activity before exporting CSV.");
+  }
+
+  const rows = [
+    ["id", "name", "swimlane", "subSwimlane", "duration", "dependencies", "milestone"],
+    ...activities.map((activity) => [
+      activity.id,
+      activity.name,
+      activity.swimlane,
+      activity.subSwimlane || "",
+      activity.duration,
+      activity.dependencies.join(", "),
+      activity.milestone ? "true" : "false"
+    ])
+  ];
+
+  const csv = rows
+    .map((row) => row.map((value) => csvEscape(value)).join(","))
+    .join("\r\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "cartoon-schedule-activities.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+  setStatus(`Exported ${activities.length} activities to CSV.`);
+}
+
+function downloadSvg() {
+  const source = buildExportSvgMarkup();
   const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -1253,8 +1392,7 @@ function downloadSvg() {
 }
 
 function downloadPng() {
-  const serializer = new XMLSerializer();
-  const source = serializer.serializeToString(els.scheduleSvg);
+  const source = buildExportSvgMarkup();
   const svgBlob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
   const url = URL.createObjectURL(svgBlob);
 
@@ -1263,12 +1401,14 @@ function downloadPng() {
     const viewBox = (els.scheduleSvg.getAttribute("viewBox") || "0 0 800 400")
       .split(" ")
       .map(Number);
+    const scale = 2;
     const canvas = document.createElement("canvas");
-    canvas.width = viewBox[2];
-    canvas.height = viewBox[3];
+    canvas.width = viewBox[2] * scale;
+    canvas.height = viewBox[3] * scale;
     const ctx = canvas.getContext("2d");
+    ctx.scale(scale, scale);
     ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, viewBox[2], viewBox[3]);
     ctx.drawImage(img, 0, 0);
 
     canvas.toBlob((blob) => {
@@ -1344,6 +1484,13 @@ els.sprintStartDate.addEventListener("change", buildAndRender);
 els.startingSprintNumber.addEventListener("change", buildAndRender);
 els.addRowBtn.addEventListener("click", () => addRow());
 els.clearRowsBtn.addEventListener("click", clearRows);
+els.downloadCsvBtn.addEventListener("click", () => {
+  try {
+    downloadCsv();
+  } catch (error) {
+    setStatus(`CSV export error: ${error.message}`);
+  }
+});
 els.downloadSvgBtn.addEventListener("click", downloadSvg);
 els.downloadPngBtn.addEventListener("click", downloadPng);
 
@@ -1362,6 +1509,8 @@ els.csvInput.addEventListener("change", async (event) => {
     buildAndRender();
   } catch (error) {
     setStatus(`CSV error: ${error.message}`);
+  } finally {
+    event.target.value = "";
   }
 });
 
