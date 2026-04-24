@@ -1,4 +1,10 @@
 :root {
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   --bg-top: #f2f7ff;
   --bg-bottom: #dfeafb;
   --panel-bg: rgba(255, 255, 255, 0.96);
@@ -13,6 +19,42 @@
   --danger: #ce2d4f;
   --shadow: 0 18px 40px rgba(31, 74, 140, 0.12);
   font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+=======
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+  --bg: #f4f7fb;
+  --panel-bg: #ffffff;
+  --ink: #1e2a39;
+  --muted: #5b6b80;
+  --line: #d4deed;
+  --accent: #2a74ff;
+  --danger: #ce2d4f;
+  --shadow: 0 8px 28px rgba(16, 27, 55, 0.08);
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
 }
 
 * {
@@ -21,6 +63,12 @@
 
 body {
   margin: 0;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   padding: 10px;
   background:
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 32%),
@@ -54,17 +102,93 @@ body {
   color: var(--muted);
   max-width: 700px;
   font-size: 0.76rem;
+=======
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+  padding: 24px;
+  background: linear-gradient(175deg, #f8fbff, var(--bg));
+  color: var(--ink);
+}
+
+.app-header h1 {
+  margin: 0 0 8px;
+}
+
+.app-header p {
+  margin-top: 0;
+  color: var(--muted);
+  max-width: 960px;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
 }
 
 .layout {
   display: grid;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   gap: 8px;
   grid-template-columns: minmax(200px, 250px) minmax(0, 1fr);
+=======
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+>>>>>>> theirs
+=======
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+>>>>>>> theirs
+=======
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+>>>>>>> theirs
+=======
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+>>>>>>> theirs
+=======
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+>>>>>>> theirs
+=======
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+>>>>>>> theirs
   align-items: start;
 }
 
 .panel {
   background: var(--panel-bg);
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   border: 1px solid var(--line-strong);
   border-radius: 12px;
   box-shadow: var(--shadow);
@@ -91,11 +215,52 @@ body {
 .controls-panel small,
 #statusText {
   color: var(--muted);
+=======
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.panel h2 {
+  margin-top: 0;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
 }
 
 .controls-panel .field-row {
   display: flex;
   flex-direction: column;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   gap: 2px;
   margin-bottom: 5px;
 }
@@ -118,12 +283,42 @@ label {
   font-size: 0.74rem;
   font-weight: 600;
   color: #355679;
+=======
+  gap: 6px;
+  margin-bottom: 12px;
+>>>>>>> theirs
+=======
+  gap: 6px;
+  margin-bottom: 12px;
+>>>>>>> theirs
+=======
+  gap: 6px;
+  margin-bottom: 12px;
+>>>>>>> theirs
+=======
+  gap: 6px;
+  margin-bottom: 12px;
+>>>>>>> theirs
+=======
+  gap: 6px;
+  margin-bottom: 12px;
+>>>>>>> theirs
+=======
+  gap: 6px;
+  margin-bottom: 12px;
+>>>>>>> theirs
 }
 
 input[type="text"],
 input[type="number"],
 input[type="date"],
 input[type="file"] {
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   border: 1px solid #c4d6ef;
   border-radius: 8px;
   font-size: 0.74rem;
@@ -140,23 +335,94 @@ input[type="file"]:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(46, 124, 246, 0.12);
+=======
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+  border: 1px solid #b8c9e3;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  padding: 8px 10px;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
 }
 
 .checkbox-row {
   flex-direction: row !important;
   align-items: center;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   gap: 5px !important;
+=======
+  gap: 10px !important;
+>>>>>>> theirs
+=======
+  gap: 10px !important;
+>>>>>>> theirs
+=======
+  gap: 10px !important;
+>>>>>>> theirs
+=======
+  gap: 10px !important;
+>>>>>>> theirs
+=======
+  gap: 10px !important;
+>>>>>>> theirs
+=======
+  gap: 10px !important;
+>>>>>>> theirs
 }
 
 .button-row,
 .table-actions {
   display: flex;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   gap: 4px;
   margin-top: 5px;
+=======
+  gap: 8px;
+  margin-top: 10px;
+>>>>>>> theirs
+=======
+  gap: 8px;
+  margin-top: 10px;
+>>>>>>> theirs
   flex-wrap: wrap;
 }
 
 button {
+<<<<<<< ours
+<<<<<<< ours
   border: 1px solid #c3d5ee;
   background: linear-gradient(180deg, #ffffff, #edf4ff);
   color: #23466d;
@@ -177,19 +443,136 @@ button.primary {
   background: linear-gradient(180deg, #4a97ff, var(--accent-dark));
   color: white;
   border-color: #2f72d8;
+=======
+=======
+>>>>>>> theirs
+=======
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.bulk-paste {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bulk-paste textarea {
+  border: 1px solid #b8c9e3;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  padding: 8px 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  resize: vertical;
+}
+
+button {
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+  border: 1px solid #bfd0ea;
+  background: #f6faff;
+  color: #25405f;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover {
+  filter: brightness(0.98);
+}
+
+button.primary {
+  background: var(--accent);
+  color: white;
+  border-color: #1b63e7;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
 }
 
 .table-wrap {
   overflow: auto;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   max-height: 280px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.88);
+=======
+  max-height: 420px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+>>>>>>> theirs
+=======
+  max-height: 420px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+>>>>>>> theirs
+=======
+  max-height: 420px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+>>>>>>> theirs
+=======
+  max-height: 420px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+>>>>>>> theirs
+=======
+  max-height: 420px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+>>>>>>> theirs
+=======
+  max-height: 420px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+>>>>>>> theirs
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   min-width: 620px;
   table-layout: fixed;
 }
@@ -224,17 +607,65 @@ table {
 
 #activityTable .col-remove {
   width: 6%;
+=======
+  min-width: 820px;
+>>>>>>> theirs
+=======
+  min-width: 820px;
+>>>>>>> theirs
+=======
+  min-width: 820px;
+>>>>>>> theirs
+=======
+  min-width: 820px;
+>>>>>>> theirs
+=======
+  min-width: 820px;
+>>>>>>> theirs
+=======
+  min-width: 820px;
+>>>>>>> theirs
 }
 
 thead {
   position: sticky;
   top: 0;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   background: linear-gradient(180deg, #f9fbff, #edf4ff);
+=======
+  background: #f5f9ff;
+>>>>>>> theirs
+=======
+  background: #f5f9ff;
+>>>>>>> theirs
+=======
+  background: #f5f9ff;
+>>>>>>> theirs
+=======
+  background: #f5f9ff;
+>>>>>>> theirs
+=======
+  background: #f5f9ff;
+>>>>>>> theirs
+=======
+  background: #f5f9ff;
+>>>>>>> theirs
   z-index: 1;
 }
 
 th,
 td {
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   border-bottom: 1px solid #e5eef9;
   padding: 3px 4px;
   text-align: left;
@@ -248,6 +679,37 @@ th {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+=======
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+  border-bottom: 1px solid #e3ebf7;
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
 }
 
 td input[type="text"],
@@ -260,20 +722,92 @@ td input[type="number"] {
 }
 
 .remove-row-btn {
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   background: linear-gradient(180deg, #fffafa, #ffeef1);
+=======
+  background: #fff6f6;
+>>>>>>> theirs
+=======
+  background: #fff6f6;
+>>>>>>> theirs
+=======
+  background: #fff6f6;
+>>>>>>> theirs
+=======
+  background: #fff6f6;
+>>>>>>> theirs
+=======
+  background: #fff6f6;
+>>>>>>> theirs
+=======
+  background: #fff6f6;
+>>>>>>> theirs
   border-color: #ffcbcb;
   color: #8c1b1b;
 }
 
 .chart-panel {
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   margin-top: 8px;
+=======
+  margin-top: 16px;
+>>>>>>> theirs
+=======
+  margin-top: 16px;
+>>>>>>> theirs
+=======
+  margin-top: 16px;
+>>>>>>> theirs
+=======
+  margin-top: 16px;
+>>>>>>> theirs
+=======
+  margin-top: 16px;
+>>>>>>> theirs
+=======
+  margin-top: 16px;
+>>>>>>> theirs
 }
 
 .chart-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   gap: 10px;
+=======
+  gap: 16px;
+>>>>>>> theirs
+=======
+  gap: 16px;
+>>>>>>> theirs
+=======
+  gap: 16px;
+>>>>>>> theirs
+=======
+  gap: 16px;
+>>>>>>> theirs
+=======
+  gap: 16px;
+>>>>>>> theirs
+=======
+  gap: 16px;
+>>>>>>> theirs
 }
 
 #statusText {
@@ -285,18 +819,72 @@ td input[type="number"] {
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: 10px;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(240, 246, 255, 0.95)),
     #f8fbff;
+=======
+  background: #f8fbff;
+>>>>>>> theirs
+=======
+  background: #f8fbff;
+>>>>>>> theirs
+=======
+  background: #f8fbff;
+>>>>>>> theirs
+=======
+  background: #f8fbff;
+>>>>>>> theirs
+=======
+  background: #f8fbff;
+>>>>>>> theirs
+=======
+  background: #f8fbff;
+>>>>>>> theirs
 }
 
 #scheduleSvg {
   width: 100%;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   min-height: 190px;
+=======
+  min-height: 440px;
+>>>>>>> theirs
+=======
+  min-height: 440px;
+>>>>>>> theirs
+=======
+  min-height: 440px;
+>>>>>>> theirs
+=======
+  min-height: 440px;
+>>>>>>> theirs
+=======
+  min-height: 440px;
+>>>>>>> theirs
+=======
+  min-height: 440px;
+>>>>>>> theirs
   display: block;
 }
 
 .lane-label {
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
   font-size: 7px;
   font-weight: 700;
   fill: #222222;
@@ -377,4 +965,55 @@ small {
   body {
     padding: 8px;
   }
+=======
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+  font-size: 13px;
+  font-weight: 700;
+  fill: #19304f;
+}
+
+.axis-label {
+  font-size: 11px;
+  fill: #617791;
+}
+
+.task-label {
+  font-size: 12px;
+  fill: #18314f;
+  font-weight: 600;
+}
+
+.milestone-label {
+  font-size: 11px;
+  fill: #18314f;
+}
+
+.date-label {
+  font-size: 10px;
+  fill: #516780;
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
 }

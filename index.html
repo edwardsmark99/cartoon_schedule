@@ -30,6 +30,12 @@
           <label for="showCriticalPath">Show critical path (red outline)</label>
         </div>
 
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
         <div class="field-row checkbox-row">
           <input type="checkbox" id="showSprints" />
           <label for="showSprints">Show sprint row</label>
@@ -52,13 +58,49 @@
           </div>
         </div>
 
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
         <div class="field-row">
           <label for="csvInput">Import activities from CSV</label>
           <input type="file" id="csvInput" accept=".csv,text/csv" />
           <small>
             Required columns: id, name, swimlane, duration, dependencies,
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
             milestone. Optional: subswimlane. Dependencies should be comma
             separated IDs.
+=======
+            milestone. Dependencies should be comma separated IDs.
+>>>>>>> theirs
+=======
+            milestone. Dependencies should be comma separated IDs.
+>>>>>>> theirs
+=======
+            milestone. Dependencies should be comma separated IDs.
+>>>>>>> theirs
+=======
+            milestone. Dependencies should be comma separated IDs.
+>>>>>>> theirs
+=======
+            milestone. Dependencies should be comma separated IDs.
+>>>>>>> theirs
+=======
+            milestone. Dependencies should be comma separated IDs.
+>>>>>>> theirs
           </small>
         </div>
 
@@ -68,7 +110,25 @@
         </div>
 
         <div class="button-row">
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
           <button id="downloadCsvBtn" type="button">Download activities CSV</button>
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
           <button id="downloadPngBtn" type="button">Download chart PNG</button>
           <button id="downloadSvgBtn" type="button">Download chart SVG</button>
         </div>
@@ -84,9 +144,15 @@
           <button id="addRowBtn" type="button">Add activity row</button>
           <button id="clearRowsBtn" type="button">Clear all rows</button>
         </div>
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
 
         <div class="table-wrap">
           <table id="activityTable">
+<<<<<<< ours
+<<<<<<< ours
             <colgroup>
               <col class="col-id" />
               <col class="col-name" />
@@ -97,12 +163,63 @@
               <col class="col-milestone" />
               <col class="col-remove" />
             </colgroup>
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+        <div class="bulk-paste">
+          <label for="bulkPasteInput">Paste directly from Excel (rows/columns)</label>
+          <textarea
+            id="bulkPasteInput"
+            rows="5"
+            placeholder="Paste cells copied from Excel here (ID, Name, Swim lane, Duration, Dependencies, Milestone)"
+          ></textarea>
+          <button id="applyBulkPasteBtn" type="button">Apply pasted table</button>
+        </div>
+
+        <div class="table-wrap">
+          <table id="activityTable">
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Activity Name</th>
                 <th>Swim lane</th>
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
                 <th>Sub-swim lane</th>
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
                 <th>Duration<br />(working days)</th>
                 <th>Dependencies<br />(comma separated IDs)</th>
                 <th>Milestone?</th>
@@ -133,9 +250,27 @@
           <input type="text" data-field="swimlane" placeholder="Design" />
         </td>
         <td>
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
           <input type="text" data-field="subSwimlane" placeholder="UX" />
         </td>
         <td>
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
           <input
             type="number"
             data-field="duration"
