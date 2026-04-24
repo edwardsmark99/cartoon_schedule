@@ -2,12 +2,6 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 
 const EXAMPLE_DATA = {
   projectStart: "2026-04-06",
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   sprintSettings: {
     enabled: false,
     duration: 10,
@@ -23,52 +17,10 @@ const EXAMPLE_DATA = {
     { id: "C2", name: "Feature build", swimlane: "Engineering", subSwimlane: "Delivery", duration: 10, dependencies: ["B2", "C1"], milestone: false },
     { id: "D1", name: "QA regression", swimlane: "Quality", subSwimlane: "Testing", duration: 5, dependencies: ["C2"], milestone: false },
     { id: "M1", name: "Go-live milestone", swimlane: "Milestones", subSwimlane: "", duration: 0, dependencies: ["D1"], milestone: true }
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-  activities: [
-    { id: "A1", name: "Discovery workshops", swimlane: "Product", duration: 5, dependencies: [], milestone: false },
-    { id: "A2", name: "Requirements baseline", swimlane: "Product", duration: 3, dependencies: ["A1"], milestone: false },
-    { id: "B1", name: "UX concepts", swimlane: "Design", duration: 6, dependencies: ["A1"], milestone: false },
-    { id: "B2", name: "UI prototype", swimlane: "Design", duration: 4, dependencies: ["B1", "A2"], milestone: false },
-    { id: "C1", name: "Architecture setup", swimlane: "Engineering", duration: 7, dependencies: ["A2"], milestone: false },
-    { id: "C2", name: "Feature build", swimlane: "Engineering", duration: 10, dependencies: ["B2", "C1"], milestone: false },
-    { id: "D1", name: "QA regression", swimlane: "Quality", duration: 5, dependencies: ["C2"], milestone: false },
-    { id: "M1", name: "Go-live milestone", swimlane: "Milestones", duration: 0, dependencies: ["D1"], milestone: true }
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   ]
 };
 
 const palette = [
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   {
     bandFill: "#50afe8",
     labelFill: "#d8effe",
@@ -101,115 +53,26 @@ const palette = [
     taskFill: "#eb3223",
     stroke: "#eb3223"
   }
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-  { laneFill: "#e2efff", taskFill: "#9ec5ff", stroke: "#4f8ff8" },
-  { laneFill: "#e9f8ef", taskFill: "#9ad9b0", stroke: "#38a169" },
-  { laneFill: "#fff4dc", taskFill: "#ffd892", stroke: "#d89216" },
-  { laneFill: "#f7e8ff", taskFill: "#d6a8f8", stroke: "#9d5bd6" },
-  { laneFill: "#ffecef", taskFill: "#ffb8c4", stroke: "#d94f70" },
-  { laneFill: "#e7f9fc", taskFill: "#9fdff0", stroke: "#2a9db7" }
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 ];
 
 const els = {
   projectStart: document.getElementById("projectStart"),
   showCriticalPath: document.getElementById("showCriticalPath"),
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   showSprints: document.getElementById("showSprints"),
   sprintSettings: document.getElementById("sprintSettings"),
   sprintDuration: document.getElementById("sprintDuration"),
   sprintStartDate: document.getElementById("sprintStartDate"),
   startingSprintNumber: document.getElementById("startingSprintNumber"),
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   csvInput: document.getElementById("csvInput"),
   loadExampleBtn: document.getElementById("loadExampleBtn"),
   renderBtn: document.getElementById("renderBtn"),
   addRowBtn: document.getElementById("addRowBtn"),
   clearRowsBtn: document.getElementById("clearRowsBtn"),
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-=======
-  bulkPasteInput: document.getElementById("bulkPasteInput"),
-  applyBulkPasteBtn: document.getElementById("applyBulkPasteBtn"),
->>>>>>> theirs
-=======
-  bulkPasteInput: document.getElementById("bulkPasteInput"),
-  applyBulkPasteBtn: document.getElementById("applyBulkPasteBtn"),
->>>>>>> theirs
-=======
-  bulkPasteInput: document.getElementById("bulkPasteInput"),
-  applyBulkPasteBtn: document.getElementById("applyBulkPasteBtn"),
->>>>>>> theirs
-=======
-  bulkPasteInput: document.getElementById("bulkPasteInput"),
-  applyBulkPasteBtn: document.getElementById("applyBulkPasteBtn"),
->>>>>>> theirs
   tbody: document.getElementById("activityTableBody"),
   rowTemplate: document.getElementById("activityRowTemplate"),
   status: document.getElementById("statusText"),
   scheduleSvg: document.getElementById("scheduleSvg"),
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   downloadCsvBtn: document.getElementById("downloadCsvBtn"),
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   downloadPngBtn: document.getElementById("downloadPngBtn"),
   downloadSvgBtn: document.getElementById("downloadSvgBtn")
 };
@@ -360,30 +223,12 @@ function workingDaysBetween(startDate, endDate) {
   return count;
 }
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
 function signedWorkingDaysBetween(startDate, endDate) {
   return endDate >= startDate
     ? workingDaysBetween(startDate, endDate)
     : -workingDaysBetween(endDate, startDate);
 }
 
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 function clearRows() {
   els.tbody.innerHTML = "";
 }
@@ -393,25 +238,7 @@ function addRow(activity = {}) {
   row.querySelector('[data-field="id"]').value = activity.id || "";
   row.querySelector('[data-field="name"]').value = activity.name || "";
   row.querySelector('[data-field="swimlane"]').value = activity.swimlane || "";
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   row.querySelector('[data-field="subSwimlane"]').value = activity.subSwimlane || "";
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   row.querySelector('[data-field="duration"]').value = Number.isFinite(activity.duration)
     ? activity.duration
     : "";
@@ -433,56 +260,14 @@ function readActivitiesFromTable() {
     const id = row.querySelector('[data-field="id"]').value.trim();
     const name = row.querySelector('[data-field="name"]').value.trim();
     const swimlane = row.querySelector('[data-field="swimlane"]').value.trim();
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
     const subSwimlane = row.querySelector('[data-field="subSwimlane"]').value.trim();
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
     const durationRaw = row.querySelector('[data-field="duration"]').value.trim();
     const dependenciesRaw = row
       .querySelector('[data-field="dependencies"]')
       .value.trim();
     const milestone = row.querySelector('[data-field="milestone"]').checked;
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
     if (!id && !name && !swimlane && !subSwimlane && !durationRaw && !dependenciesRaw && !milestone) {
-=======
-    if (!id && !name && !swimlane && !durationRaw && !dependenciesRaw && !milestone) {
->>>>>>> theirs
-=======
-    if (!id && !name && !swimlane && !durationRaw && !dependenciesRaw && !milestone) {
->>>>>>> theirs
-=======
-    if (!id && !name && !swimlane && !durationRaw && !dependenciesRaw && !milestone) {
->>>>>>> theirs
-=======
-    if (!id && !name && !swimlane && !durationRaw && !dependenciesRaw && !milestone) {
->>>>>>> theirs
-=======
-    if (!id && !name && !swimlane && !durationRaw && !dependenciesRaw && !milestone) {
->>>>>>> theirs
-=======
-    if (!id && !name && !swimlane && !durationRaw && !dependenciesRaw && !milestone) {
->>>>>>> theirs
       continue;
     }
 
@@ -502,43 +287,13 @@ function readActivitiesFromTable() {
           .filter(Boolean)
       : [];
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
     activities.push({ id, name, swimlane, subSwimlane, duration, dependencies, milestone });
-=======
-    activities.push({ id, name, swimlane, duration, dependencies, milestone });
->>>>>>> theirs
-=======
-    activities.push({ id, name, swimlane, duration, dependencies, milestone });
->>>>>>> theirs
-=======
-    activities.push({ id, name, swimlane, duration, dependencies, milestone });
->>>>>>> theirs
-=======
-    activities.push({ id, name, swimlane, duration, dependencies, milestone });
->>>>>>> theirs
-=======
-    activities.push({ id, name, swimlane, duration, dependencies, milestone });
->>>>>>> theirs
-=======
-    activities.push({ id, name, swimlane, duration, dependencies, milestone });
->>>>>>> theirs
   }
 
   return activities;
 }
 
 function parseCsv(text) {
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   function normalizeCsvHeader(value) {
     return value
       .replace(/^\uFEFF/, "")
@@ -623,95 +378,15 @@ function parseCsv(text) {
   const missing = ["id", "name", "swimlane", "duration", "dependencies", "milestone"].filter(
     (field) => idx[field] === -1
   );
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-  const lines = text
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  if (lines.length < 2) {
-    throw new Error("CSV should include a header row plus at least one data row.");
-  }
-
-  const headers = lines[0].split(",").map((h) => h.trim().toLowerCase());
-  const required = ["id", "name", "swimlane", "duration", "dependencies", "milestone"];
-
-  const missing = required.filter((col) => !headers.includes(col));
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   if (missing.length) {
     throw new Error(`Missing CSV columns: ${missing.join(", ")}`);
   }
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   return rows.slice(1).map((cols, rowNum) => {
     const id = (cols[idx.id] || "").trim();
     const name = (cols[idx.name] || "").trim();
     const swimlane = (cols[idx.swimlane] || "").trim();
     const subSwimlane = idx.subSwimlane >= 0 ? (cols[idx.subSwimlane] || "").trim() : "";
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-  const idx = Object.fromEntries(headers.map((h, i) => [h, i]));
-
-  return lines.slice(1).map((line, rowNum) => {
-    const cols = line.split(",");
-    const id = (cols[idx.id] || "").trim();
-    const name = (cols[idx.name] || "").trim();
-    const swimlane = (cols[idx.swimlane] || "").trim();
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
     const duration = Number((cols[idx.duration] || "").trim());
     const dependencies = (cols[idx.dependencies] || "")
       .split(/[;|]/)
@@ -721,161 +396,16 @@ function parseCsv(text) {
       .filter(Boolean);
 
     const milestoneValue = (cols[idx.milestone] || "").trim().toLowerCase();
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
     const milestone = ["true", "yes", "y", "1"].includes(milestoneValue);
-=======
-    const milestone = parseMilestoneValue(milestoneValue);
->>>>>>> theirs
-=======
-    const milestone = parseMilestoneValue(milestoneValue);
->>>>>>> theirs
-=======
-    const milestone = parseMilestoneValue(milestoneValue);
->>>>>>> theirs
-=======
-    const milestone = parseMilestoneValue(milestoneValue);
->>>>>>> theirs
 
     if (!id || !name || !swimlane || !Number.isFinite(duration)) {
       throw new Error(`CSV row ${rowNum + 2} has invalid fields.`);
     }
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
     return { id, name, swimlane, subSwimlane, duration, dependencies, milestone };
-=======
-    return { id, name, swimlane, duration, dependencies, milestone };
->>>>>>> theirs
-=======
-    return { id, name, swimlane, duration, dependencies, milestone };
->>>>>>> theirs
   });
 }
 
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-    return { id, name, swimlane, duration, dependencies, milestone };
-  });
-}
-
-function parseMilestoneValue(value) {
-  return ["true", "yes", "y", "1", "milestone"].includes(
-    (value || "").toString().trim().toLowerCase()
-  );
-}
-
-function parseDependencyCell(value) {
-  return (value || "")
-    .toString()
-    .split(/[;,|]/)
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
-function parseExcelPaste(text) {
-<<<<<<< ours
-<<<<<<< ours
-  const rows = text
-=======
-  const rawRows = text
->>>>>>> theirs
-=======
-  const rawRows = text
->>>>>>> theirs
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-<<<<<<< ours
-<<<<<<< ours
-  if (!rows.length) {
-    throw new Error("No rows found in pasted data.");
-  }
-
-  const parsed = rows.map((row, index) => {
-    const cols = row.split("\t").map((c) => c.trim());
-=======
-=======
->>>>>>> theirs
-  if (!rawRows.length) {
-    throw new Error("No rows found in pasted data.");
-  }
-
-  const rows = rawRows.map((row) => row.split("\t").map((c) => c.trim()));
-  const first = rows[0] || [];
-  const hasHeader =
-    (first[0] || "").toLowerCase() === "id" &&
-    (first[1] || "").toLowerCase() === "name" &&
-    (first[2] || "").toLowerCase().includes("swim");
-
-  const dataRows = hasHeader ? rows.slice(1) : rows;
-  if (!dataRows.length) {
-    throw new Error("Pasted data contained only a header row.");
-  }
-
-  return dataRows.map((cols, index) => {
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-    if (cols.length < 4) {
-      throw new Error(`Pasted row ${index + 1} has too few columns.`);
-    }
-
-    const [id, name, swimlane, durationRaw, dependenciesRaw = "", milestoneRaw = ""] = cols;
-    const duration = Number(durationRaw);
-    if (!id || !name || !swimlane || !Number.isFinite(duration)) {
-      throw new Error(`Pasted row ${index + 1} is missing required values.`);
-    }
-
-    return {
-      id,
-      name,
-      swimlane,
-      duration,
-      dependencies: parseDependencyCell(dependenciesRaw),
-      milestone: parseMilestoneValue(milestoneRaw)
-    };
-  });
-<<<<<<< ours
-<<<<<<< ours
-
-  const headerLike = parsed[0];
-  if (
-    headerLike.id.toLowerCase() === "id" &&
-    headerLike.name.toLowerCase() === "name" &&
-    headerLike.swimlane.toLowerCase().includes("swim")
-  ) {
-    return parsed.slice(1);
-  }
-
-  return parsed;
-}
-
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
-}
-
->>>>>>> theirs
-=======
-}
-
->>>>>>> theirs
 function buildGraph(activities) {
   const map = new Map();
 
@@ -988,12 +518,6 @@ function formatDate(date) {
   });
 }
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
 function formatMonthYear(date) {
   return date.toLocaleDateString("en-GB", {
     month: "long",
@@ -1010,18 +534,6 @@ function formatDayMonth(date) {
   });
 }
 
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 function laneOrder(nodes) {
   const order = [];
   nodes.forEach((n) => {
@@ -1032,12 +544,6 @@ function laneOrder(nodes) {
   return order;
 }
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
 function subSwimlaneKey(node) {
   return `${node.swimlane}:::${node.subSwimlane || ""}`;
 }
@@ -1335,48 +841,6 @@ function renderSvg(schedule, showCritical, sprintSettings) {
   });
 
   const height = laneCursorY - laneGap + margin.bottom;
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-function renderSvg(schedule, showCritical) {
-  const { graph, order, projectDuration, firstWorkDay } = schedule;
-  const nodes = order.map((id) => graph.get(id));
-  const milestoneNodes = nodes.filter((node) => node.milestone);
-  const taskNodes = nodes.filter((node) => !node.milestone);
-  const lanes = laneOrder(taskNodes);
-  const laneIdx = new Map(lanes.map((lane, i) => [lane, i]));
-  const colors = laneColorMap(lanes);
-
-  const margin = { top: 46, right: 20, bottom: 38, left: 170 };
-  const dayWidth = 32;
-  const milestoneBandHeight = 66;
-  const laneHeight = 82;
-  const width = margin.left + margin.right + Math.max(projectDuration + 2, 12) * dayWidth;
-  const height = margin.top + margin.bottom + milestoneBandHeight + lanes.length * laneHeight;
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 
   els.scheduleSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
   els.scheduleSvg.innerHTML = "";
@@ -1391,12 +855,6 @@ function renderSvg(schedule, showCritical) {
   bg.setAttribute("fill", "#ffffff");
   els.scheduleSvg.appendChild(bg);
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   const defs = document.createElementNS(ns, "defs");
   const dependencyArrow = document.createElementNS(ns, "marker");
   dependencyArrow.setAttribute("id", "dependency-arrow");
@@ -1593,51 +1051,11 @@ function renderSvg(schedule, showCritical) {
   milestoneBand.setAttribute("height", milestoneBandHeight.toString());
   milestoneBand.setAttribute("fill", "#ffffff");
   milestoneBand.setAttribute("stroke", "#eceff4");
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-  const milestoneBand = document.createElementNS(ns, "rect");
-  milestoneBand.setAttribute("x", margin.left.toString());
-  milestoneBand.setAttribute("y", margin.top.toString());
-  milestoneBand.setAttribute("width", (width - margin.left - margin.right).toString());
-  milestoneBand.setAttribute("height", milestoneBandHeight.toString());
-  milestoneBand.setAttribute("fill", "#fff3e5");
-  milestoneBand.setAttribute("stroke", "#e3eaf7");
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   milestoneBand.setAttribute("stroke-width", "1");
   els.scheduleSvg.appendChild(milestoneBand);
 
   const milestoneLabel = document.createElementNS(ns, "text");
   milestoneLabel.textContent = "Milestones";
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   milestoneLabel.setAttribute("x", swimlaneLabelX.toString());
   milestoneLabel.setAttribute("y", (margin.top + timescaleHeight + milestoneBandHeight / 2 + 3).toString());
   milestoneLabel.setAttribute("class", "lane-label");
@@ -1654,43 +1072,6 @@ function renderSvg(schedule, showCritical) {
     swimlaneBand.setAttribute("height", laneHeight.toString());
     swimlaneBand.setAttribute("fill", c.bandFill);
     els.scheduleSvg.appendChild(swimlaneBand);
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-  milestoneLabel.setAttribute("x", "12");
-  milestoneLabel.setAttribute("y", (margin.top + milestoneBandHeight / 2 + 5).toString());
-  milestoneLabel.setAttribute("class", "lane-label");
-  els.scheduleSvg.appendChild(milestoneLabel);
-
-  const lanesStartY = margin.top + milestoneBandHeight;
-
-  lanes.forEach((lane, idx) => {
-    const y = lanesStartY + idx * laneHeight;
-    const c = colors.get(lane);
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
 
     const laneRect = document.createElementNS(ns, "rect");
     laneRect.setAttribute("x", margin.left.toString());
@@ -1698,12 +1079,6 @@ function renderSvg(schedule, showCritical) {
     laneRect.setAttribute("width", (width - margin.left - margin.right).toString());
     laneRect.setAttribute("height", laneHeight.toString());
     laneRect.setAttribute("fill", c.laneFill);
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
     laneRect.setAttribute("stroke", "#f4ebe0");
     laneRect.setAttribute("stroke-width", "1");
     els.scheduleSvg.appendChild(laneRect);
@@ -1742,43 +1117,6 @@ function renderSvg(schedule, showCritical) {
       subLabel.setAttribute("text-anchor", "middle");
       els.scheduleSvg.appendChild(subLabel);
     });
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-    laneRect.setAttribute("stroke", "#e3eaf7");
-    laneRect.setAttribute("stroke-width", "1");
-    els.scheduleSvg.appendChild(laneRect);
-
-    const label = document.createElementNS(ns, "text");
-    label.textContent = lane;
-    label.setAttribute("x", "12");
-    label.setAttribute("y", (y + laneHeight / 2 + 5).toString());
-    label.setAttribute("class", "lane-label");
-    els.scheduleSvg.appendChild(label);
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   });
 
   for (let d = 0; d <= projectDuration + 1; d += 1) {
@@ -1787,12 +1125,6 @@ function renderSvg(schedule, showCritical) {
     const line = document.createElementNS(ns, "line");
     line.setAttribute("x1", x.toString());
     line.setAttribute("x2", x.toString());
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
     line.setAttribute("y1", (margin.top + timescaleHeight).toString());
     line.setAttribute("y2", (height - margin.bottom).toString());
     line.setAttribute("stroke", "#d8effe");
@@ -1808,130 +1140,22 @@ function renderSvg(schedule, showCritical) {
       : lane.y + lanePaddingY + taskRowIdx * rowHeight;
     const barY = node.milestone ? margin.top + timescaleHeight + 4 : yBase + 2;
     const taskBarHeight = 12;
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-    line.setAttribute("y1", margin.top.toString());
-    line.setAttribute("y2", (height - margin.bottom).toString());
-    line.setAttribute("stroke", d % 5 === 0 ? "#ced9ec" : "#e6edf8");
-    line.setAttribute("stroke-width", "1");
-    els.scheduleSvg.appendChild(line);
-
-    if (d % 5 === 0) {
-      const date = addWorkingDays(firstWorkDay, d);
-      const text = document.createElementNS(ns, "text");
-      text.textContent = formatDate(date);
-      text.setAttribute("x", (x + 2).toString());
-      text.setAttribute("y", "22");
-      text.setAttribute("class", "date-label");
-      els.scheduleSvg.appendChild(text);
-    }
-  }
-
-  nodes.forEach((node) => {
-    const lane = laneIdx.get(node.swimlane);
-    const yBase = node.milestone ? margin.top : lanesStartY + lane * laneHeight;
-    const barY = node.milestone ? margin.top + 12 : yBase + 24;
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
     const x = margin.left + node.es * dayWidth;
     const widthDays = Math.max(node.duration, 1);
     const barW = widthDays * dayWidth - 4;
     const c = node.milestone
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
       ? { taskFill: "#000000", stroke: "#000000" }
-=======
-      ? { taskFill: "#ffc775", stroke: "#d89216" }
->>>>>>> theirs
-=======
-      ? { taskFill: "#ffc775", stroke: "#d89216" }
->>>>>>> theirs
-=======
-      ? { taskFill: "#ffc775", stroke: "#d89216" }
->>>>>>> theirs
-=======
-      ? { taskFill: "#ffc775", stroke: "#d89216" }
->>>>>>> theirs
-=======
-      ? { taskFill: "#ffc775", stroke: "#d89216" }
->>>>>>> theirs
-=======
-      ? { taskFill: "#ffc775", stroke: "#d89216" }
->>>>>>> theirs
       : colors.get(node.swimlane);
 
     if (node.milestone) {
       const cx = x + dayWidth / 2;
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
       const cy = margin.top + timescaleHeight + milestoneBandHeight / 2;
       const size = 7;
-=======
-      const cy = margin.top + milestoneBandHeight / 2;
-      const size = 12;
->>>>>>> theirs
-=======
-      const cy = margin.top + milestoneBandHeight / 2;
-      const size = 12;
->>>>>>> theirs
-=======
-      const cy = margin.top + milestoneBandHeight / 2;
-      const size = 12;
->>>>>>> theirs
-=======
-      const cy = margin.top + milestoneBandHeight / 2;
-      const size = 12;
->>>>>>> theirs
-=======
-      const cy = margin.top + milestoneBandHeight / 2;
-      const size = 12;
->>>>>>> theirs
-=======
-      const cy = margin.top + milestoneBandHeight / 2;
-      const size = 12;
->>>>>>> theirs
       const diamond = document.createElementNS(ns, "polygon");
       diamond.setAttribute(
         "points",
         `${cx},${cy - size} ${cx + size},${cy} ${cx},${cy + size} ${cx - size},${cy}`
       );
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
       diamond.setAttribute("fill", "#000000");
       diamond.setAttribute("stroke", showCritical && node.critical ? "#d92332" : "#000000");
       diamond.setAttribute("stroke-width", showCritical && node.critical ? "3" : "1");
@@ -2007,72 +1231,10 @@ function renderSvg(schedule, showCritical) {
       });
 
       taskLabelOverlays.push(label);
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-      diamond.setAttribute("fill", c.stroke);
-      diamond.setAttribute("stroke", showCritical && node.critical ? "#d92332" : "#5d6f89");
-      diamond.setAttribute("stroke-width", showCritical && node.critical ? "3" : "1.4");
-      els.scheduleSvg.appendChild(diamond);
-
-      const label = document.createElementNS(ns, "text");
-      label.textContent = `${node.name} (${formatDate(node.startDate)})`;
-      label.setAttribute("x", (cx + 16).toString());
-      label.setAttribute("y", (cy + 4).toString());
-      label.setAttribute("class", "milestone-label");
-      els.scheduleSvg.appendChild(label);
-    } else {
-      const bar = document.createElementNS(ns, "rect");
-      bar.setAttribute("x", (x + 2).toString());
-      bar.setAttribute("y", barY.toString());
-      bar.setAttribute("width", Math.max(barW, 24).toString());
-      bar.setAttribute("height", "30");
-      bar.setAttribute("rx", "12");
-      bar.setAttribute("fill", c.taskFill);
-      bar.setAttribute("stroke", showCritical && node.critical ? "#d92332" : c.stroke);
-      bar.setAttribute("stroke-width", showCritical && node.critical ? "3" : "1.4");
-      els.scheduleSvg.appendChild(bar);
-
-      const label = document.createElementNS(ns, "text");
-      label.textContent = `${node.name} (${node.duration}d)`;
-      label.setAttribute("x", (x + 12).toString());
-      label.setAttribute("y", (barY + 19).toString());
-      label.setAttribute("class", "task-label");
-      els.scheduleSvg.appendChild(label);
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
     }
 
     node.dependencies.forEach((depId) => {
       const dep = graph.get(depId);
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
       const depLane = subgroupLayout.get(subSwimlaneKey(dep));
       const depRowIdx = taskRow.get(dep.id) || 0;
       const depBarY = dep.milestone
@@ -2113,101 +1275,20 @@ function renderSvg(schedule, showCritical) {
       path.setAttribute("stroke-width", "1");
       path.setAttribute("marker-end", "url(#dependency-arrow)");
       path.setAttribute("opacity", "1");
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-      const depLane = laneIdx.get(dep.swimlane);
-      const depX = margin.left + dep.ef * dayWidth;
-      const depY = dep.milestone
-        ? margin.top + milestoneBandHeight / 2
-        : lanesStartY + depLane * laneHeight + 39;
-      const targetX = margin.left + node.es * dayWidth + 2;
-      const targetY = node.milestone ? margin.top + milestoneBandHeight / 2 : barY + 15;
-
-      const path = document.createElementNS(ns, "path");
-      const midX = depX + (targetX - depX) / 2;
-      path.setAttribute(
-        "d",
-        `M ${depX} ${depY} C ${midX} ${depY}, ${midX} ${targetY}, ${targetX} ${targetY}`
-      );
-      path.setAttribute("fill", "none");
-      path.setAttribute("stroke", "#8c9cb6");
-      path.setAttribute("stroke-width", "1.2");
-      path.setAttribute("opacity", "0.8");
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
       els.scheduleSvg.appendChild(path);
     });
   });
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   taskLabelOverlays.forEach((label) => {
     els.scheduleSvg.appendChild(label);
   });
 
   const legendX = width - 166;
   const legendY = 4;
-=======
-  const legendX = width - 275;
-  const legendY = 10;
->>>>>>> theirs
-=======
-  const legendX = width - 275;
-  const legendY = 10;
->>>>>>> theirs
-=======
-  const legendX = width - 275;
-  const legendY = 10;
->>>>>>> theirs
-=======
-  const legendX = width - 275;
-  const legendY = 10;
->>>>>>> theirs
-=======
-  const legendX = width - 275;
-  const legendY = 10;
->>>>>>> theirs
-=======
-  const legendX = width - 275;
-  const legendY = 10;
->>>>>>> theirs
 
   const legendBg = document.createElementNS(ns, "rect");
   legendBg.setAttribute("x", legendX.toString());
   legendBg.setAttribute("y", legendY.toString());
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   legendBg.setAttribute("width", "154");
   legendBg.setAttribute("height", "16");
   legendBg.setAttribute("rx", "5");
@@ -2301,52 +1382,6 @@ function downloadCsv() {
 
 function downloadSvg() {
   const source = buildExportSvgMarkup();
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-  legendBg.setAttribute("width", "255");
-  legendBg.setAttribute("height", "30");
-  legendBg.setAttribute("rx", "8");
-  legendBg.setAttribute("fill", "#f6f9ff");
-  legendBg.setAttribute("stroke", "#cdd9ee");
-  els.scheduleSvg.appendChild(legendBg);
-
-  const legend = document.createElementNS(ns, "text");
-  legend.setAttribute("x", (legendX + 10).toString());
-  legend.setAttribute("y", (legendY + 20).toString());
-  legend.setAttribute("class", "axis-label");
-  legend.textContent =
-    "Rounded bars = activities, Diamonds = milestones, Red outline = critical path";
-  els.scheduleSvg.appendChild(legend);
-}
-
-function downloadSvg() {
-  const serializer = new XMLSerializer();
-  const source = serializer.serializeToString(els.scheduleSvg);
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -2357,37 +1392,7 @@ function downloadSvg() {
 }
 
 function downloadPng() {
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   const source = buildExportSvgMarkup();
-=======
-  const serializer = new XMLSerializer();
-  const source = serializer.serializeToString(els.scheduleSvg);
->>>>>>> theirs
-=======
-  const serializer = new XMLSerializer();
-  const source = serializer.serializeToString(els.scheduleSvg);
->>>>>>> theirs
-=======
-  const serializer = new XMLSerializer();
-  const source = serializer.serializeToString(els.scheduleSvg);
->>>>>>> theirs
-=======
-  const serializer = new XMLSerializer();
-  const source = serializer.serializeToString(els.scheduleSvg);
->>>>>>> theirs
-=======
-  const serializer = new XMLSerializer();
-  const source = serializer.serializeToString(els.scheduleSvg);
->>>>>>> theirs
-=======
-  const serializer = new XMLSerializer();
-  const source = serializer.serializeToString(els.scheduleSvg);
->>>>>>> theirs
   const svgBlob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
   const url = URL.createObjectURL(svgBlob);
 
@@ -2396,12 +1401,6 @@ function downloadPng() {
     const viewBox = (els.scheduleSvg.getAttribute("viewBox") || "0 0 800 400")
       .split(" ")
       .map(Number);
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
     const scale = 2;
     const canvas = document.createElement("canvas");
     canvas.width = viewBox[2] * scale;
@@ -2410,39 +1409,6 @@ function downloadPng() {
     ctx.scale(scale, scale);
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, viewBox[2], viewBox[3]);
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-    const canvas = document.createElement("canvas");
-    canvas.width = viewBox[2];
-    canvas.height = viewBox[3];
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
     ctx.drawImage(img, 0, 0);
 
     canvas.toBlob((blob) => {
@@ -2460,48 +1426,18 @@ function downloadPng() {
 
 function loadExample() {
   els.projectStart.value = EXAMPLE_DATA.projectStart;
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   els.showSprints.checked = EXAMPLE_DATA.sprintSettings.enabled;
   els.sprintDuration.value = EXAMPLE_DATA.sprintSettings.duration;
   els.sprintStartDate.value = EXAMPLE_DATA.sprintSettings.startDate;
   els.startingSprintNumber.value = EXAMPLE_DATA.sprintSettings.startNumber;
   updateSprintControls();
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   clearRows();
   EXAMPLE_DATA.activities.forEach((a) => addRow(a));
   buildAndRender();
 }
 
 function setStatus(message) {
-<<<<<<< ours
-<<<<<<< ours
   els.status.textContent = message;
-=======
-  if (els.status) {
-    els.status.textContent = message;
-  }
->>>>>>> theirs
-=======
-  if (els.status) {
-    els.status.textContent = message;
-  }
->>>>>>> theirs
 }
 
 function buildAndRender() {
@@ -2516,12 +1452,6 @@ function buildAndRender() {
       throw new Error("Please choose a valid project start date.");
     }
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
     const sprintSettings = readSprintSettings();
     const schedule = computeSchedule(activities, startDate);
     renderSvg(schedule, els.showCriticalPath.checked, sprintSettings);
@@ -2535,39 +1465,6 @@ function buildAndRender() {
     ).size;
     setStatus(
       `Built ${activities.length} activities across ${swimlaneCount} swim lanes and ${subSwimlaneCount} sub-swim lanes. ` +
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-    const schedule = computeSchedule(activities, startDate);
-    renderSvg(schedule, els.showCriticalPath.checked);
-
-    const completionDate = addWorkingDays(schedule.firstWorkDay, schedule.projectDuration);
-    setStatus(
-      `Built ${activities.length} activities across ${laneOrder(activities).length} swim lanes. ` +
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
         `Estimated completion: ${formatDate(completionDate)}.`
     );
   } catch (error) {
@@ -2575,15 +1472,9 @@ function buildAndRender() {
   }
 }
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
 els.loadExampleBtn.addEventListener("click", loadExample);
 els.renderBtn.addEventListener("click", buildAndRender);
 els.showCriticalPath.addEventListener("change", buildAndRender);
-<<<<<<< ours
-<<<<<<< ours
 els.showSprints.addEventListener("change", () => {
   updateSprintControls();
   buildAndRender();
@@ -2600,71 +1491,9 @@ els.downloadCsvBtn.addEventListener("click", () => {
     setStatus(`CSV export error: ${error.message}`);
   }
 });
-=======
-els.addRowBtn.addEventListener("click", () => addRow());
-els.clearRowsBtn.addEventListener("click", clearRows);
->>>>>>> theirs
-=======
-els.addRowBtn.addEventListener("click", () => addRow());
-els.clearRowsBtn.addEventListener("click", clearRows);
->>>>>>> theirs
 els.downloadSvgBtn.addEventListener("click", downloadSvg);
 els.downloadPngBtn.addEventListener("click", downloadPng);
 
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-function applyBulkPaste(text) {
-  const activities = parseExcelPaste(text);
-  if (!activities.length) {
-    throw new Error("No activity rows were found after parsing.");
-  }
-  clearRows();
-  activities.forEach((activity) => addRow(activity));
-  setStatus(`Loaded ${activities.length} activities from pasted table.`);
-  buildAndRender();
-}
-
-<<<<<<< ours
-<<<<<<< ours
-els.loadExampleBtn.addEventListener("click", loadExample);
-els.renderBtn.addEventListener("click", buildAndRender);
-els.showCriticalPath.addEventListener("change", buildAndRender);
-els.addRowBtn.addEventListener("click", () => addRow());
-els.clearRowsBtn.addEventListener("click", clearRows);
-els.applyBulkPasteBtn.addEventListener("click", () => {
-  try {
-    applyBulkPaste(els.bulkPasteInput.value);
-  } catch (error) {
-    setStatus(`Paste error: ${error.message}`);
-  }
-});
-els.downloadSvgBtn.addEventListener("click", downloadSvg);
-els.downloadPngBtn.addEventListener("click", downloadPng);
-
-els.tbody.addEventListener("paste", (event) => {
-  const text = event.clipboardData?.getData("text/plain") || "";
-  if (!text.includes("\t") || !text.includes("\n")) {
-    return;
-  }
-
-  event.preventDefault();
-  try {
-    applyBulkPaste(text);
-    els.bulkPasteInput.value = text;
-  } catch (error) {
-    setStatus(`Paste error: ${error.message}`);
-  }
-});
-
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
 els.csvInput.addEventListener("change", async (event) => {
   const [file] = event.target.files;
   if (!file) {
@@ -2680,84 +1509,9 @@ els.csvInput.addEventListener("change", async (event) => {
     buildAndRender();
   } catch (error) {
     setStatus(`CSV error: ${error.message}`);
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   } finally {
     event.target.value = "";
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   }
 });
-=======
-=======
->>>>>>> theirs
-if (els.loadExampleBtn) els.loadExampleBtn.addEventListener("click", loadExample);
-if (els.renderBtn) els.renderBtn.addEventListener("click", buildAndRender);
-if (els.showCriticalPath) els.showCriticalPath.addEventListener("change", buildAndRender);
-if (els.addRowBtn) els.addRowBtn.addEventListener("click", () => addRow());
-if (els.clearRowsBtn) els.clearRowsBtn.addEventListener("click", clearRows);
-if (els.downloadSvgBtn) els.downloadSvgBtn.addEventListener("click", downloadSvg);
-if (els.downloadPngBtn) els.downloadPngBtn.addEventListener("click", downloadPng);
-
-if (els.applyBulkPasteBtn && els.bulkPasteInput) {
-  els.applyBulkPasteBtn.addEventListener("click", () => {
-    try {
-      applyBulkPaste(els.bulkPasteInput.value);
-    } catch (error) {
-      setStatus(`Paste error: ${error.message}`);
-    }
-  });
-}
-
-if (els.tbody) {
-  els.tbody.addEventListener("paste", (event) => {
-    const text = event.clipboardData?.getData("text/plain") || "";
-    if (!text.includes("\t") || !text.includes("\n")) {
-      return;
-    }
-
-    event.preventDefault();
-    try {
-      applyBulkPaste(text);
-      if (els.bulkPasteInput) {
-        els.bulkPasteInput.value = text;
-      }
-    } catch (error) {
-      setStatus(`Paste error: ${error.message}`);
-    }
-  });
-}
-
-if (els.csvInput) {
-  els.csvInput.addEventListener("change", async (event) => {
-    const [file] = event.target.files;
-    if (!file) {
-      return;
-    }
-
-    try {
-      const text = await file.text();
-      const activities = parseCsv(text);
-      clearRows();
-      activities.forEach((activity) => addRow(activity));
-      setStatus(`Loaded ${activities.length} activities from CSV.`);
-      buildAndRender();
-    } catch (error) {
-      setStatus(`CSV error: ${error.message}`);
-    }
-  });
-}
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
 
 loadExample();
