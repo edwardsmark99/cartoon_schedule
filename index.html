@@ -85,6 +85,20 @@
           <button id="clearRowsBtn" type="button">Clear all rows</button>
         </div>
 
+        <div class="excel-paste">
+          <label for="excelPasteInput">Paste activities from Excel</label>
+          <textarea
+            id="excelPasteInput"
+            rows="4"
+            spellcheck="false"
+            placeholder="ID&#9;Activity Name&#9;Swim lane&#9;Sub-swim lane&#9;Duration&#9;Dependencies&#9;Milestone"
+          ></textarea>
+          <div class="table-actions">
+            <button id="applyExcelPasteBtn" type="button" class="primary">Apply pasted rows</button>
+            <button id="clearExcelPasteBtn" type="button">Clear paste</button>
+          </div>
+        </div>
+
         <div class="table-wrap">
           <table id="activityTable">
             <colgroup>

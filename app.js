@@ -68,6 +68,9 @@ const els = {
   renderBtn: document.getElementById("renderBtn"),
   addRowBtn: document.getElementById("addRowBtn"),
   clearRowsBtn: document.getElementById("clearRowsBtn"),
+  excelPasteInput: document.getElementById("excelPasteInput"),
+  applyExcelPasteBtn: document.getElementById("applyExcelPasteBtn"),
+  clearExcelPasteBtn: document.getElementById("clearExcelPasteBtn"),
   tbody: document.getElementById("activityTableBody"),
   rowTemplate: document.getElementById("activityRowTemplate"),
   status: document.getElementById("statusText"),
@@ -293,88 +296,121 @@ function readActivitiesFromTable() {
   return activities;
 }
 
+function normalizeImportHeader(value) {
+  return value
+    .replace(/^\uFEFF/, "")
+    .trim()
+    .toLowerCase()
+    .replace(/[?()]/g, "")
+    .replace(/[^a-z0-9]+/g, "");
+}
+
+function parseDelimitedRows(rawText, delimiter) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < rawText.length; i += 1) {
+    const char = rawText[i];
+    const next = rawText[i + 1];
+
+    if (char === '"') {
+      if (inQuotes && next === '"') {
+        cell += '"';
+        i += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if (char === delimiter && !inQuotes) {
+      row.push(cell.trim());
+      cell = "";
+      continue;
+    }
+
+    if ((char === "\n" || char === "\r") && !inQuotes) {
+      if (char === "\r" && next === "\n") {
+        i += 1;
+      }
+      row.push(cell.trim());
+      if (row.some((value) => value !== "")) {
+        rows.push(row);
+      }
+      row = [];
+      cell = "";
+      continue;
+    }
+
+    cell += char;
+  }
+
+  row.push(cell.trim());
+  if (row.some((value) => value !== "")) {
+    rows.push(row);
+  }
+
+  return rows;
+}
+
+const importHeaderAliases = {
+  id: ["id", "activityid"],
+  name: ["name", "activityname", "activity", "task", "taskname"],
+  swimlane: ["swimlane", "swimlanes", "lane"],
+  subSwimlane: ["subswimlane", "subswimlanes", "sublane", "subswimlane"],
+  duration: ["duration", "workingdays", "durationworkingdays", "days"],
+  dependencies: ["dependencies", "dependency", "dependson", "predecessors", "predecessor"],
+  milestone: ["milestone", "ismilestone"]
+};
+
+function buildImportIndexes(headerRow) {
+  const normalizedHeaders = headerRow.map(normalizeImportHeader);
+  const idx = {};
+  Object.entries(importHeaderAliases).forEach(([field, aliases]) => {
+    idx[field] = normalizedHeaders.findIndex((header) => aliases.includes(header));
+  });
+  return idx;
+}
+
+function parseDependenciesCell(value) {
+  return (value || "")
+    .split(/[;,|]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function parseMilestoneCell(value) {
+  return ["true", "yes", "y", "1", "milestone", "x"].includes((value || "").trim().toLowerCase());
+}
+
+function activitiesFromRows(rows, idx, startRowNumber) {
+  return rows.map((cols, rowIndex) => {
+    const id = (cols[idx.id] || "").trim();
+    const name = (cols[idx.name] || "").trim();
+    const swimlane = (cols[idx.swimlane] || "").trim();
+    const subSwimlane = idx.subSwimlane >= 0 ? (cols[idx.subSwimlane] || "").trim() : "";
+    const duration = Number((cols[idx.duration] || "").trim());
+    const dependencies = parseDependenciesCell(cols[idx.dependencies]);
+    const milestone = parseMilestoneCell(cols[idx.milestone]);
+
+    if (!id || !name || !swimlane || !Number.isFinite(duration)) {
+      throw new Error(`Imported row ${startRowNumber + rowIndex} has invalid fields.`);
+    }
+
+    return { id, name, swimlane, subSwimlane, duration, dependencies, milestone };
+  });
+}
+
 function parseCsv(text) {
-  function normalizeCsvHeader(value) {
-    return value
-      .replace(/^\uFEFF/, "")
-      .trim()
-      .toLowerCase()
-      .replace(/[?()]/g, "")
-      .replace(/[^a-z0-9]+/g, "");
-  }
-
-  function parseCsvRows(rawText) {
-    const rows = [];
-    let row = [];
-    let cell = "";
-    let inQuotes = false;
-
-    for (let i = 0; i < rawText.length; i += 1) {
-      const char = rawText[i];
-      const next = rawText[i + 1];
-
-      if (char === '"') {
-        if (inQuotes && next === '"') {
-          cell += '"';
-          i += 1;
-        } else {
-          inQuotes = !inQuotes;
-        }
-        continue;
-      }
-
-      if (char === "," && !inQuotes) {
-        row.push(cell.trim());
-        cell = "";
-        continue;
-      }
-
-      if ((char === "\n" || char === "\r") && !inQuotes) {
-        if (char === "\r" && next === "\n") {
-          i += 1;
-        }
-        row.push(cell.trim());
-        if (row.some((value) => value !== "")) {
-          rows.push(row);
-        }
-        row = [];
-        cell = "";
-        continue;
-      }
-
-      cell += char;
-    }
-
-    row.push(cell.trim());
-    if (row.some((value) => value !== "")) {
-      rows.push(row);
-    }
-
-    return rows;
-  }
-
-  const rows = parseCsvRows(text);
+  const rows = parseDelimitedRows(text, ",");
 
   if (rows.length < 2) {
     throw new Error("CSV should include a header row plus at least one data row.");
   }
 
-  const headerAliases = {
-    id: ["id", "activityid"],
-    name: ["name", "activityname", "activity"],
-    swimlane: ["swimlane", "swimlanes", "lane"],
-    subSwimlane: ["subswimlane", "subswimlanes", "sublane"],
-    duration: ["duration", "workingdays", "durationworkingdays", "days"],
-    dependencies: ["dependencies", "dependency", "dependson", "predecessors", "predecessor"],
-    milestone: ["milestone", "ismilestone"]
-  };
-
-  const normalizedHeaders = rows[0].map(normalizeCsvHeader);
-  const idx = {};
-  Object.entries(headerAliases).forEach(([field, aliases]) => {
-    idx[field] = normalizedHeaders.findIndex((header) => aliases.includes(header));
-  });
-
+  const idx = buildImportIndexes(rows[0]);
   const missing = ["id", "name", "swimlane", "duration", "dependencies", "milestone"].filter(
     (field) => idx[field] === -1
   );
@@ -382,28 +418,48 @@ function parseCsv(text) {
     throw new Error(`Missing CSV columns: ${missing.join(", ")}`);
   }
 
-  return rows.slice(1).map((cols, rowNum) => {
-    const id = (cols[idx.id] || "").trim();
-    const name = (cols[idx.name] || "").trim();
-    const swimlane = (cols[idx.swimlane] || "").trim();
-    const subSwimlane = idx.subSwimlane >= 0 ? (cols[idx.subSwimlane] || "").trim() : "";
-    const duration = Number((cols[idx.duration] || "").trim());
-    const dependencies = (cols[idx.dependencies] || "")
-      .split(/[;|]/)
-      .join(",")
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
+  return activitiesFromRows(rows.slice(1), idx, 2);
+}
 
-    const milestoneValue = (cols[idx.milestone] || "").trim().toLowerCase();
-    const milestone = ["true", "yes", "y", "1"].includes(milestoneValue);
+function parseExcelPaste(text) {
+  const rows = parseDelimitedRows(text, text.includes("\t") ? "\t" : ",");
 
-    if (!id || !name || !swimlane || !Number.isFinite(duration)) {
-      throw new Error(`CSV row ${rowNum + 2} has invalid fields.`);
+  if (!rows.length) {
+    throw new Error("Paste at least one activity row from Excel.");
+  }
+
+  const headerIndexes = buildImportIndexes(rows[0]);
+  const hasHeader = ["id", "name", "swimlane", "duration"].every((field) => headerIndexes[field] >= 0);
+
+  if (hasHeader) {
+    const missing = ["id", "name", "swimlane", "duration"].filter((field) => headerIndexes[field] === -1);
+    if (missing.length) {
+      throw new Error(`Missing pasted columns: ${missing.join(", ")}`);
     }
+    if (headerIndexes.dependencies === -1) {
+      headerIndexes.dependencies = rows[0].length;
+    }
+    if (headerIndexes.milestone === -1) {
+      headerIndexes.milestone = rows[0].length + 1;
+    }
+    return activitiesFromRows(rows.slice(1), headerIndexes, 2);
+  }
 
-    return { id, name, swimlane, subSwimlane, duration, dependencies, milestone };
-  });
+  const maxCols = Math.max(...rows.map((row) => row.length));
+  const idx = maxCols >= 7
+    ? { id: 0, name: 1, swimlane: 2, subSwimlane: 3, duration: 4, dependencies: 5, milestone: 6 }
+    : { id: 0, name: 1, swimlane: 2, subSwimlane: -1, duration: 3, dependencies: 4, milestone: 5 };
+
+  return activitiesFromRows(rows, idx, 1);
+}
+
+function replaceActivities(activities) {
+  if (!activities.length) {
+    throw new Error("No activities found.");
+  }
+
+  clearRows();
+  activities.forEach((activity) => addRow(activity));
 }
 
 function buildGraph(activities) {
@@ -641,6 +697,158 @@ function wrapTaskLabel(text, maxWidth) {
 
 function estimateLabelWidth(text) {
   return text.length * 3.6;
+}
+
+function normalizeRect(rect) {
+  return {
+    left: Math.min(rect.left, rect.right),
+    right: Math.max(rect.left, rect.right),
+    top: Math.min(rect.top, rect.bottom),
+    bottom: Math.max(rect.top, rect.bottom)
+  };
+}
+
+function rectsOverlap(a, b) {
+  const first = normalizeRect(a);
+  const second = normalizeRect(b);
+  return first.left <= second.right &&
+    first.right >= second.left &&
+    first.top <= second.bottom &&
+    first.bottom >= second.top;
+}
+
+function segmentIntersectsRect(segment, rect) {
+  const paddedRect = normalizeRect(rect);
+  const x1 = Math.min(segment.x1, segment.x2);
+  const x2 = Math.max(segment.x1, segment.x2);
+  const y1 = Math.min(segment.y1, segment.y2);
+  const y2 = Math.max(segment.y1, segment.y2);
+
+  if (segment.y1 === segment.y2) {
+    return segment.y1 >= paddedRect.top &&
+      segment.y1 <= paddedRect.bottom &&
+      x2 >= paddedRect.left &&
+      x1 <= paddedRect.right;
+  }
+
+  if (segment.x1 === segment.x2) {
+    return segment.x1 >= paddedRect.left &&
+      segment.x1 <= paddedRect.right &&
+      y2 >= paddedRect.top &&
+      y1 <= paddedRect.bottom;
+  }
+
+  return rectsOverlap({ left: x1, right: x2, top: y1, bottom: y2 }, paddedRect);
+}
+
+function pathSegmentsFromPoints(points) {
+  const segments = [];
+  for (let idx = 1; idx < points.length; idx += 1) {
+    const from = points[idx - 1];
+    const to = points[idx];
+    if (from.x === to.x && from.y === to.y) {
+      continue;
+    }
+    segments.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y });
+  }
+  return segments;
+}
+
+function orthogonalPath(points) {
+  return points
+    .map((point, idx) => {
+      if (idx === 0) {
+        return `M ${point.x} ${point.y}`;
+      }
+      const previous = points[idx - 1];
+      if (point.y === previous.y) {
+        return `H ${point.x}`;
+      }
+      if (point.x === previous.x) {
+        return `V ${point.y}`;
+      }
+      return `L ${point.x} ${point.y}`;
+    })
+    .join(" ");
+}
+
+function labelRectForCandidate(candidate, labelWidth, labelHeight) {
+  const halfHeight = labelHeight / 2;
+  if (candidate.anchor === "start") {
+    return {
+      left: candidate.x,
+      right: candidate.x + labelWidth,
+      top: candidate.y - halfHeight,
+      bottom: candidate.y + halfHeight
+    };
+  }
+  if (candidate.anchor === "end") {
+    return {
+      left: candidate.x - labelWidth,
+      right: candidate.x,
+      top: candidate.y - halfHeight,
+      bottom: candidate.y + halfHeight
+    };
+  }
+  return {
+    left: candidate.x - labelWidth / 2,
+    right: candidate.x + labelWidth / 2,
+    top: candidate.y - halfHeight,
+    bottom: candidate.y + halfHeight
+  };
+}
+
+function chooseTaskLabelPlacement(geometry, labelLines, bounds, dependencySegments, occupiedLabelRects) {
+  const padding = 3;
+  const labelLineStep = 5;
+  const labelWidth = Math.max(...labelLines.map((line) => estimateLabelWidth(line)));
+  const labelHeight = Math.max(labelLines.length * labelLineStep, 7);
+  const middleY = geometry.barY + geometry.taskBarHeight / 2;
+  const rightSpace = bounds.right - geometry.barEndX - 8;
+  const leftSpace = geometry.barStartX - bounds.left - 8;
+  const preferRight = rightSpace >= leftSpace;
+  const candidates = [
+    { x: geometry.barEndX + 10, y: middleY, anchor: "start", priority: preferRight ? 0 : 1 },
+    { x: geometry.barStartX - 10, y: middleY, anchor: "end", priority: preferRight ? 1 : 0 },
+    { x: geometry.barEndX + 10, y: middleY - 9, anchor: "start", priority: preferRight ? 2 : 3 },
+    { x: geometry.barStartX - 10, y: middleY - 9, anchor: "end", priority: preferRight ? 3 : 2 },
+    { x: geometry.barEndX + 10, y: middleY + 9, anchor: "start", priority: preferRight ? 4 : 5 },
+    { x: geometry.barStartX - 10, y: middleY + 9, anchor: "end", priority: preferRight ? 5 : 4 },
+    { x: geometry.barStartX + geometry.taskWidth / 2, y: geometry.barY - 8, anchor: "middle", priority: 6 },
+    {
+      x: geometry.barStartX + geometry.taskWidth / 2,
+      y: geometry.barY + geometry.taskBarHeight + 8,
+      anchor: "middle",
+      priority: 7
+    }
+  ];
+
+  return candidates
+    .map((candidate) => {
+      const rect = labelRectForCandidate(candidate, labelWidth, labelHeight);
+      const paddedRect = {
+        left: rect.left - padding,
+        right: rect.right + padding,
+        top: rect.top - padding,
+        bottom: rect.bottom + padding
+      };
+      const offChart =
+        paddedRect.left < bounds.left ||
+        paddedRect.right > bounds.right ||
+        paddedRect.top < bounds.top ||
+        paddedRect.bottom > bounds.bottom;
+      const lineHits = dependencySegments.filter((segment) => segmentIntersectsRect(segment, paddedRect)).length;
+      const labelHits = occupiedLabelRects.filter((occupied) => rectsOverlap(occupied, paddedRect)).length;
+      return {
+        ...candidate,
+        rect,
+        labelWidth,
+        labelHeight,
+        lineStep: labelLineStep,
+        score: lineHits * 100 + labelHits * 25 + (offChart ? 1000 : 0) + candidate.priority
+      };
+    })
+    .sort((a, b) => a.score - b.score)[0];
 }
 
 function buildTimelineDates(firstWorkDay, projectDuration) {
@@ -1132,6 +1340,9 @@ function renderSvg(schedule, showCritical, sprintSettings) {
     els.scheduleSvg.appendChild(line);
   }
 
+  const nodeGeometry = new Map();
+  const dependencySegments = [];
+
   nodes.forEach((node) => {
     const lane = subgroupLayout.get(subSwimlaneKey(node));
     const taskRowIdx = taskRow.get(node.id) || 0;
@@ -1174,6 +1385,16 @@ function renderSvg(schedule, showCritical, sprintSettings) {
       dateLabel.setAttribute("y", (cy + 6).toString());
       dateLabel.setAttribute("class", "milestone-date-label");
       els.scheduleSvg.appendChild(dateLabel);
+
+      nodeGeometry.set(node.id, {
+        milestone: true,
+        cx,
+        cy,
+        sourceX: margin.left + node.ef * dayWidth,
+        sourceY: cy,
+        targetX: cx - size,
+        targetY: cy
+      });
     } else {
       const taskWidth = Math.max(barW, 18);
       const tip = Math.min(5, taskWidth / 3);
@@ -1197,78 +1418,87 @@ function renderSvg(schedule, showCritical, sprintSettings) {
       els.scheduleSvg.appendChild(bar);
 
       const labelText = `${node.name} (${node.duration}d)`;
-      const rightSpace = width - margin.right - barEndX - 8;
-      const leftSpace = barStartX - margin.left - 8;
-      const preferRight = rightSpace >= leftSpace;
-      const labelMaxWidth = Math.max((preferRight ? rightSpace : leftSpace) - 4, 24);
+      const labelMaxWidth = Math.max(Math.max(width - margin.right - barEndX, barStartX - margin.left) - 12, 24);
       const labelLines = wrapTaskLabel(labelText, labelMaxWidth);
-      const labelWidth = Math.max(...labelLines.map((line) => estimateLabelWidth(line)));
-      const canFitRight = rightSpace >= labelWidth;
-      const canFitLeft = leftSpace >= labelWidth;
-      const placeRight = canFitRight || (!canFitLeft && preferRight);
-      const labelX = placeRight ? barEndX + 10 : barStartX - 10;
-      const labelAnchor = placeRight ? "start" : "end";
-      const labelLineStep = 5;
-      const labelCenterY = barY + taskBarHeight / 2;
 
-      const label = document.createElementNS(ns, "text");
-      label.setAttribute("x", labelX.toString());
-      label.setAttribute("y", labelCenterY.toString());
-      label.setAttribute("class", "task-label");
-      label.setAttribute("text-anchor", labelAnchor);
-      label.setAttribute("dominant-baseline", "middle");
-
-      labelLines.forEach((line, index) => {
-        const tspan = document.createElementNS(ns, "tspan");
-        tspan.textContent = line;
-        tspan.setAttribute("x", labelX.toString());
-        tspan.setAttribute(
-          "y",
-          (labelCenterY + (index - (labelLines.length - 1) / 2) * labelLineStep).toString()
-        );
-        tspan.setAttribute("dominant-baseline", "middle");
-        label.appendChild(tspan);
+      nodeGeometry.set(node.id, {
+        milestone: false,
+        barY,
+        barStartX,
+        barEndX,
+        taskWidth,
+        taskBarHeight,
+        sourceX: margin.left + node.ef * dayWidth,
+        sourceY: barY + taskBarHeight / 2,
+        targetX: barStartX,
+        targetY: barY + taskBarHeight / 2,
+        underY: barY + taskBarHeight + 6
       });
 
-      taskLabelOverlays.push(label);
+      taskLabelOverlays.push({ node, labelLines });
     }
+  });
 
+  nodes.forEach((node) => {
     node.dependencies.forEach((depId) => {
       const dep = graph.get(depId);
-      const depLane = subgroupLayout.get(subSwimlaneKey(dep));
-      const depRowIdx = taskRow.get(dep.id) || 0;
-      const depBarY = dep.milestone
-        ? margin.top + timescaleHeight + 4
-        : depLane.y + lanePaddingY + depRowIdx * rowHeight + 2;
-      const depX = margin.left + dep.ef * dayWidth;
-      const depY = dep.milestone
-        ? margin.top + timescaleHeight + milestoneBandHeight / 2
-        : depBarY + taskBarHeight / 2;
-      const targetX = node.milestone
-        ? margin.left + node.es * dayWidth + dayWidth / 2 - 7
-        : x + 2;
-      const targetY = node.milestone
-        ? margin.top + timescaleHeight + milestoneBandHeight / 2
-        : barY + taskBarHeight / 2;
+      const depGeometry = nodeGeometry.get(dep.id);
+      const targetGeometry = nodeGeometry.get(node.id);
+      const depX = depGeometry.sourceX;
+      const depY = depGeometry.sourceY;
+      const targetX = targetGeometry.targetX;
+      const targetY = targetGeometry.targetY;
       const finalApproachX = targetX - 6;
       const backtracks = depX >= finalApproachX;
       const sourceExitX = backtracks ? depX + 8 : depX;
-      const underSourceY = dep.milestone ? depY + 10 : depBarY + taskBarHeight + 6;
+      const underSourceY = depGeometry.milestone ? depY + 10 : depGeometry.underY;
       const milestoneRiseY = node.milestone ? Math.max(targetY + 6, depY - 10) : targetY;
-
-      const path = document.createElementNS(ns, "path");
       const elbowX = depX < finalApproachX
         ? depX + Math.max((finalApproachX - depX) / 2, 8)
         : Math.max(margin.left - 10, targetX - 18);
+
+      const pathPoints = node.milestone
+        ? backtracks
+          ? [
+              { x: depX, y: depY },
+              { x: sourceExitX, y: depY },
+              { x: sourceExitX, y: milestoneRiseY },
+              { x: elbowX, y: milestoneRiseY },
+              { x: elbowX, y: targetY },
+              { x: finalApproachX, y: targetY },
+              { x: targetX, y: targetY }
+            ]
+          : [
+              { x: depX, y: depY },
+              { x: elbowX, y: depY },
+              { x: elbowX, y: targetY },
+              { x: finalApproachX, y: targetY },
+              { x: targetX, y: targetY }
+            ]
+        : backtracks
+        ? [
+            { x: depX, y: depY },
+            { x: sourceExitX, y: depY },
+            { x: sourceExitX, y: underSourceY },
+            { x: elbowX, y: underSourceY },
+            { x: elbowX, y: targetY },
+            { x: finalApproachX, y: targetY },
+            { x: targetX, y: targetY }
+          ]
+        : [
+            { x: depX, y: depY },
+            { x: elbowX, y: depY },
+            { x: elbowX, y: targetY },
+            { x: finalApproachX, y: targetY },
+            { x: targetX, y: targetY }
+          ];
+
+      dependencySegments.push(...pathSegmentsFromPoints(pathPoints));
+
+      const path = document.createElementNS(ns, "path");
       path.setAttribute(
         "d",
-        node.milestone
-          ? backtracks
-            ? `M ${depX} ${depY} H ${sourceExitX} V ${milestoneRiseY} H ${elbowX} V ${targetY} H ${finalApproachX} H ${targetX}`
-            : `M ${depX} ${depY} H ${elbowX} V ${targetY} H ${finalApproachX} H ${targetX}`
-          : backtracks
-          ? `M ${depX} ${depY} H ${sourceExitX} V ${underSourceY} H ${elbowX} V ${targetY} H ${finalApproachX} H ${targetX}`
-          : `M ${depX} ${depY} H ${elbowX} V ${targetY} H ${finalApproachX} H ${targetX}`
+        orthogonalPath(pathPoints)
       );
       path.setAttribute("fill", "none");
       path.setAttribute("stroke", "#404040");
@@ -1279,8 +1509,62 @@ function renderSvg(schedule, showCritical, sprintSettings) {
     });
   });
 
-  taskLabelOverlays.forEach((label) => {
-    els.scheduleSvg.appendChild(label);
+  const occupiedLabelRects = [];
+  taskLabelOverlays.forEach(({ node, labelLines }) => {
+    const geometry = nodeGeometry.get(node.id);
+    const placement = chooseTaskLabelPlacement(
+      geometry,
+      labelLines,
+      {
+        left: margin.left + 3,
+        right: width - margin.right - 3,
+        top: margin.top + timescaleHeight + 3,
+        bottom: height - margin.bottom - 3
+      },
+      dependencySegments,
+      occupiedLabelRects
+    );
+
+    const labelGroup = document.createElementNS(ns, "g");
+    labelGroup.setAttribute("class", "task-label-group");
+
+    const labelBg = document.createElementNS(ns, "rect");
+    labelBg.setAttribute("x", (placement.rect.left - 2).toString());
+    labelBg.setAttribute("y", (placement.rect.top - 2).toString());
+    labelBg.setAttribute("width", (placement.labelWidth + 4).toString());
+    labelBg.setAttribute("height", (placement.labelHeight + 4).toString());
+    labelBg.setAttribute("rx", "2");
+    labelBg.setAttribute("fill", "#ffffff");
+    labelBg.setAttribute("fill-opacity", "0.92");
+    labelGroup.appendChild(labelBg);
+
+    const label = document.createElementNS(ns, "text");
+    label.setAttribute("x", placement.x.toString());
+    label.setAttribute("y", placement.y.toString());
+    label.setAttribute("class", "task-label");
+    label.setAttribute("text-anchor", placement.anchor);
+    label.setAttribute("dominant-baseline", "middle");
+
+    labelLines.forEach((line, index) => {
+      const tspan = document.createElementNS(ns, "tspan");
+      tspan.textContent = line;
+      tspan.setAttribute("x", placement.x.toString());
+      tspan.setAttribute(
+        "y",
+        (placement.y + (index - (labelLines.length - 1) / 2) * placement.lineStep).toString()
+      );
+      tspan.setAttribute("dominant-baseline", "middle");
+      label.appendChild(tspan);
+    });
+
+    labelGroup.appendChild(label);
+    els.scheduleSvg.appendChild(labelGroup);
+    occupiedLabelRects.push({
+      left: placement.rect.left - 2,
+      right: placement.rect.right + 2,
+      top: placement.rect.top - 2,
+      bottom: placement.rect.bottom + 2
+    });
   });
 
   const legendX = width - 166;
@@ -1440,6 +1724,14 @@ function setStatus(message) {
   els.status.textContent = message;
 }
 
+function applyExcelPaste(text) {
+  const activities = parseExcelPaste(text);
+  replaceActivities(activities);
+  els.excelPasteInput.value = "";
+  setStatus(`Loaded ${activities.length} activities from pasted Excel rows.`);
+  buildAndRender();
+}
+
 function buildAndRender() {
   try {
     const activities = readActivitiesFromTable();
@@ -1484,6 +1776,16 @@ els.sprintStartDate.addEventListener("change", buildAndRender);
 els.startingSprintNumber.addEventListener("change", buildAndRender);
 els.addRowBtn.addEventListener("click", () => addRow());
 els.clearRowsBtn.addEventListener("click", clearRows);
+els.applyExcelPasteBtn.addEventListener("click", () => {
+  try {
+    applyExcelPaste(els.excelPasteInput.value);
+  } catch (error) {
+    setStatus(`Paste error: ${error.message}`);
+  }
+});
+els.clearExcelPasteBtn.addEventListener("click", () => {
+  els.excelPasteInput.value = "";
+});
 els.downloadCsvBtn.addEventListener("click", () => {
   try {
     downloadCsv();
@@ -1503,14 +1805,30 @@ els.csvInput.addEventListener("change", async (event) => {
   try {
     const text = await file.text();
     const activities = parseCsv(text);
-    clearRows();
-    activities.forEach((activity) => addRow(activity));
+    replaceActivities(activities);
     setStatus(`Loaded ${activities.length} activities from CSV.`);
     buildAndRender();
   } catch (error) {
     setStatus(`CSV error: ${error.message}`);
   } finally {
     event.target.value = "";
+  }
+});
+
+els.tbody.addEventListener("paste", (event) => {
+  const text = event.clipboardData?.getData("text/plain") || "";
+  if (!text.includes("\t") && !text.includes("\n")) {
+    return;
+  }
+
+  try {
+    event.preventDefault();
+    const activities = parseExcelPaste(text);
+    replaceActivities(activities);
+    setStatus(`Loaded ${activities.length} activities from pasted Excel rows.`);
+    buildAndRender();
+  } catch (error) {
+    setStatus(`Paste error: ${error.message}`);
   }
 });
 

@@ -123,7 +123,8 @@ label {
 input[type="text"],
 input[type="number"],
 input[type="date"],
-input[type="file"] {
+input[type="file"],
+textarea {
   border: 1px solid #c4d6ef;
   border-radius: 8px;
   font-size: 0.74rem;
@@ -136,10 +137,29 @@ input[type="file"] {
 input[type="text"]:focus,
 input[type="number"]:focus,
 input[type="date"]:focus,
-input[type="file"]:focus {
+input[type="file"]:focus,
+textarea:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(46, 124, 246, 0.12);
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 58px;
+  resize: vertical;
+  line-height: 1.25;
+}
+
+.excel-paste {
+  display: grid;
+  gap: 5px;
+  margin: 7px 0;
+  padding: 6px;
+  border: 1px solid #d6e3f5;
+  border-radius: 10px;
+  background: rgba(233, 241, 251, 0.55);
 }
 
 .checkbox-row {
